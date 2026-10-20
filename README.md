@@ -48,5 +48,5 @@ latexmk -pdf declaration.tex
 
 ## Autorzy
 
-- [Imię i nazwisko autora 1]
-- [Imię i nazwisko autora 2]
+- Jakub Rudnik
+- Marcel Kowalczyk
