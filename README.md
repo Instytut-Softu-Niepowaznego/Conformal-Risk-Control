@@ -17,6 +17,10 @@ To nie jest oficjalna implementacja autorów publikacji. Opisy, wyprowadzenia
 i eksperymenty pokazują naszą interpretację metody CRC i jej uproszczoną adaptację
 do zadania z kursu. Zmiany względem publikacji są dokumentowane na bieżąco.
 
+## Repozytorium
+
+https://github.com/Instytut-Softu-Niepowaznego/Conformal-Risk-Control
+
 ## Pytanie badawcze
 
 Jak wielkość zbioru kalibracyjnego wpływa na kontrolę ryzyka pominięcia prawdziwych
