@@ -1,0 +1,164 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\doublespacing
+
+% Pola do uzupełnienia
+\newcommand{\uzupelnij}[1]{\textbf{[#1]}}
+\newcommand{\autorA}{\uzupelnij{Imię i nazwisko autora 1}}
+\newcommand{\autorB}{\uzupelnij{Imię i nazwisko autora 2}}
+\newcommand{\repo}{\url{https://github.com/Instytut-Softu-Niepowaznego/Conformal-Risk-Control}}
+
+\begin{document}
+
+\title{Kontrola ryzyka pominięcia etykiet za pomocą Conformal Risk Control\\[0.5em]
+\large Deklaracja projektu --- Rozpoznawanie wzorców, studia II stopnia}
+\author{\autorA \and \autorB}
+\date{\today}
+
+\maketitle
+
+\begin{abstract}
+
+Projekt dotyczy kontroli niepewności i ryzyka predykcji w klasyfikacji wieloetykietowej.
+Odtworzono procedurę Conformal Risk Control (CRC) \cite{CRC} w uproszczonym, małym
+problemie syntetycznym i zbadano, jak wielkość zbioru kalibracyjnego wpływa na kontrolę
+ryzyka pominięcia prawdziwych etykiet oraz na rozmiar zwracanych zbiorów predykcji.
+CRC porównano ze stałym progiem prawdopodobieństwa 0{,}5.
+
+\end{abstract}
+
+\pagebreak
+
+%--TEMAT--%
+\section{Temat projektu}
+
+\textbf{Temat nr 17:} Kontrola ryzyka pominięcia etykiet za pomocą Conformal Risk Control.
+
+\noindent\textbf{Obszar:} niepewność i kontrola ryzyka predykcji.
+
+\noindent\textbf{Publikacja bazowa:} A.~Angelopoulos, S.~Bates, A.~Fisch, L.~Lei,
+T.~Schuster, \emph{Conformal Risk Control}, ICLR 2024 \cite{CRC}.
+
+\noindent\textbf{Pytanie badawcze:} Jak wielkość zbioru kalibracyjnego wpływa na kontrolę
+ryzyka pominięcia etykiet i rozmiar zwracanych zbiorów predykcji?
+
+%--OPIS ZADANIA--%
+\section{Opis zadania}
+
+\subsection{Podstawy teoretyczne}
+
+Rozważono predykcję wieloetykietową z $K$ etykietami: dla obiektu $X$ zbiór prawdziwych
+etykiet $Y \subseteq \{1,\dots,K\}$ jest niepusty, a model zwraca zbiór predykcji
+$C_\lambda(X) = \{k : \hat p_k(X) \ge 1-\lambda\}$, gdzie $\hat p_k$ to oszacowane
+prawdopodobieństwo etykiety $k$. Stratą jest odsetek pominiętych prawdziwych etykiet:
+\[
+  \ell\bigl(C_\lambda(X), Y\bigr) = 1 - \frac{|Y \cap C_\lambda(X)|}{|Y|} \in [0, B], \qquad B = 1 .
+\]
+Strata jest ograniczona i monotoniczna: przy rosnącym $\lambda$ zbiór $C_\lambda$ rośnie,
+a strata nie rośnie. Przykładowo dla $Y=\{A,B\}$ predykcja $\{A\}$ daje stratę $1/2$,
+a predykcja $\{A,B,C\}$ stratę $0$ --- kosztem dodatkowej, fałszywej etykiety.
+
+Na podstawie $n$ obiektów kalibracyjnych, wymiennych z obiektem testowym, CRC wybiera
+\[
+  \hat\lambda = \inf\Bigl\{\lambda : \tfrac{n}{n+1}\,\hat R_n(\lambda) + \tfrac{B}{n+1} \le \alpha\Bigr\},
+  \qquad \hat R_n(\lambda) = \frac{1}{n}\sum_{i=1}^{n} \ell\bigl(C_\lambda(X_i), Y_i\bigr),
+\]
+co gwarantuje $\mathbb{E}\bigl[\ell(C_{\hat\lambda}(X_{n+1}), Y_{n+1})\bigr] \le \alpha$.
+Gwarancja dotyczy wartości oczekiwanej ryzyka --- nie poprawności każdej pojedynczej
+predykcji ani warunkowej kontroli w podgrupach. Sam próg surowego średniego błędu
+(bez poprawki $n/(n+1)$ i składnika $B/(n+1)$) nie jest pełną procedurą CRC.
+
+\subsection{Dane i zakres odtworzenia}
+
+\begin{itemize}
+  \item Syntetyczny problem z 5 etykietami i 20 cechami, co najmniej jedna prawdziwa
+        etykieta na obiekt; kontrolowany generator zapewnia wymienność danych
+        kalibracyjnych i testowych.
+  \item Rozłączne części: treningowa, kalibracyjna i testowa (kilka tysięcy obiektów
+        na zbiór).
+  \item Klasyfikator: OneVsRest z regresją logistyczną, trenowany na części niezależnej
+        od kalibracji.
+  \item Adaptacja procedury CRC do małych danych; docelowe ryzyko $\alpha = 0{,}1$;
+        punkt odniesienia: stały próg prawdopodobieństwa $0{,}5$.
+  \item Raportowane metryki: średnia strata oraz średnia liczba etykiet w zbiorze
+        predykcji.
+\end{itemize}
+
+\subsection{Eksperyment własny}
+
+Porównano kalibrację na $n \in \{50, 200, 500\}$ obiektach. Dla każdego rozmiaru
+wykonano 30 losowań podziału kalibracja/test i zaraportowano ryzyko, rozmiar zbiorów
+predykcji oraz ich zmienność. Parametrów nie dobierano na podstawie zbioru testowego.
+
+\subsection{Metodologia i kontrola poprawności}
+
+\begin{itemize}
+  \item Przed końcowym badaniem utrwalono podziały danych, parametry, metryki i ziarna
+        losowań.
+  \item Zachowano wyniki wszystkich zaplanowanych uruchomień, błędy oraz powody
+        ewentualnych brakujących wyników.
+  \item Zinterpretowano kontrolę oczekiwanego ryzyka, a nie wymaganie, by każdy skończony
+        test dał wynik poniżej $\alpha$; omówiono koszt zwiększania zbioru predykcji.
+  \item Udokumentowano zmiany względem publikacji.
+\end{itemize}
+
+%--REPOZYTORIUM--%
+\section{Repozytorium}
+
+Kod, konfiguracje, surowe wyniki oraz instrukcja uruchomienia:
+\begin{center}
+\repo
+\end{center}
+
+%--HARMONOGRAM--%
+\section{Harmonogram i punkty kontrolne}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{>{\raggedright}p{0.17\textwidth} >{\raggedright}p{0.53\textwidth} p{0.18\textwidth}}
+\toprule
+\textbf{Etap} & \textbf{Zakres i materiały} & \textbf{Termin} \\
+\midrule
+Etap 1: Prezentacja tematu &
+Strata, monotoniczność, wymienność; przykład etykiet i poprawki kalibracyjnej;
+ustalenie generatora, $\alpha$ i rozłącznych części danych.
+Slajdy + protokół ($\sim$1 strona). &
+\uzupelnij{data} \\
+\midrule
+Etap 2: Wstępne wyniki &
+Działający klasyfikator, próg stały i pierwsza kalibracja CRC; powiązanie wzoru
+poprawki z kodem. Slajdy, uruchamialny kod, pierwsze wyniki, notatka z postępów
+(1--2 strony). &
+\uzupelnij{data} \\
+\midrule
+Etap 3: Prezentacja i raport końcowy &
+30 losowań dla każdego rozmiaru kalibracji; analiza ryzyka, wielkości predykcji
+i założeń gwarancji. Raport 6--8 stron, slajdy, kod, instrukcja uruchomienia,
+wersje zależności, surowe wyniki. &
+\uzupelnij{data} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%--BIBLIOGRAPHY--%
+\begin{thebibliography}{99}
+
+\bibitem{CRC} A.~N.~Angelopoulos, S.~Bates, A.~Fisch, L.~Lei, T.~Schuster,
+``Conformal Risk Control'', International Conference on Learning Representations
+(ICLR), 2024. \\
+Publikacja bazowa projektu; wprowadza procedurę CRC kontrolującą oczekiwaną wartość
+ograniczonej, monotonicznej straty.
+
+\end{thebibliography}
+
+\end{document}
