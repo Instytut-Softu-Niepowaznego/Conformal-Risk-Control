@@ -14,8 +14,8 @@
 
 % Pola do uzupełnienia
 \newcommand{\uzupelnij}[1]{\textbf{[#1]}}
-\newcommand{\autorA}{Jakub Rudnik}
-\newcommand{\autorB}{Marcel Kowalczyk}
+\newcommand{\autorA}{\uzupelnij{Jakub Rudnik}}
+\newcommand{\autorB}{\uzupelnij{Marcel Kowalczyk}}
 \newcommand{\repo}{\url{https://github.com/Instytut-Softu-Niepowaznego/Conformal-Risk-Control}}
 
 \begin{document}
@@ -78,39 +78,6 @@ Gwarancja dotyczy wartości oczekiwanej ryzyka --- nie poprawności każdej poje
 predykcji ani warunkowej kontroli w podgrupach. Sam próg surowego średniego błędu
 (bez poprawki $n/(n+1)$ i składnika $B/(n+1)$) nie jest pełną procedurą CRC.
 
-\subsection{Dane i zakres odtworzenia}
-
-\begin{itemize}
-  \item Syntetyczny problem z 5 etykietami i 20 cechami, co najmniej jedna prawdziwa
-        etykieta na obiekt; kontrolowany generator zapewnia wymienność danych
-        kalibracyjnych i testowych.
-  \item Rozłączne części: treningowa, kalibracyjna i testowa (kilka tysięcy obiektów
-        na zbiór).
-  \item Klasyfikator: OneVsRest z regresją logistyczną, trenowany na części niezależnej
-        od kalibracji.
-  \item Adaptacja procedury CRC do małych danych; docelowe ryzyko $\alpha = 0{,}1$;
-        punkt odniesienia: stały próg prawdopodobieństwa $0{,}5$.
-  \item Raportowane metryki: średnia strata oraz średnia liczba etykiet w zbiorze
-        predykcji.
-\end{itemize}
-
-\subsection{Eksperyment własny}
-
-Porównano kalibrację na $n \in \{50, 200, 500\}$ obiektach. Dla każdego rozmiaru
-wykonano 30 losowań podziału kalibracja/test i zaraportowano ryzyko, rozmiar zbiorów
-predykcji oraz ich zmienność. Parametrów nie dobierano na podstawie zbioru testowego.
-
-\subsection{Metodologia i kontrola poprawności}
-
-\begin{itemize}
-  \item Przed końcowym badaniem utrwalono podziały danych, parametry, metryki i ziarna
-        losowań.
-  \item Zachowano wyniki wszystkich zaplanowanych uruchomień, błędy oraz powody
-        ewentualnych brakujących wyników.
-  \item Zinterpretowano kontrolę oczekiwanego ryzyka, a nie wymaganie, by każdy skończony
-        test dał wynik poniżej $\alpha$; omówiono koszt zwiększania zbioru predykcji.
-  \item Udokumentowano zmiany względem publikacji.
-\end{itemize}
 
 %--REPOZYTORIUM--%
 \section{Repozytorium}
@@ -118,36 +85,6 @@ predykcji oraz ich zmienność. Parametrów nie dobierano na podstawie zbioru te
 Kod, konfiguracje, surowe wyniki oraz instrukcja uruchomienia:
 \begin{center}
 \repo
-\end{center}
-
-%--HARMONOGRAM--%
-\section{Harmonogram i punkty kontrolne}
-
-\begin{center}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{>{\raggedright}p{0.17\textwidth} >{\raggedright}p{0.53\textwidth} p{0.18\textwidth}}
-\toprule
-\textbf{Etap} & \textbf{Zakres i materiały} & \textbf{Termin} \\
-\midrule
-Etap 1: Prezentacja tematu &
-Strata, monotoniczność, wymienność; przykład etykiet i poprawki kalibracyjnej;
-ustalenie generatora, $\alpha$ i rozłącznych części danych.
-Slajdy + protokół ($\sim$1 strona). &
-\uzupelnij{data} \\
-\midrule
-Etap 2: Wstępne wyniki &
-Działający klasyfikator, próg stały i pierwsza kalibracja CRC; powiązanie wzoru
-poprawki z kodem. Slajdy, uruchamialny kod, pierwsze wyniki, notatka z postępów
-(1--2 strony). &
-\uzupelnij{data} \\
-\midrule
-Etap 3: Prezentacja i raport końcowy &
-30 losowań dla każdego rozmiaru kalibracji; analiza ryzyka, wielkości predykcji
-i założeń gwarancji. Raport 6--8 stron, slajdy, kod, instrukcja uruchomienia,
-wersje zależności, surowe wyniki. &
-\uzupelnij{data} \\
-\bottomrule
-\end{tabular}
 \end{center}
 
 %--BIBLIOGRAPHY--%
